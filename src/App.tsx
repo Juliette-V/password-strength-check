@@ -1,24 +1,48 @@
-import React from 'react';
-import logo from './logo.svg';
+import { useMemo, useState } from 'react';
 import './App.css';
+import { getPasswordStrength, getSectionColor } from './utils';
+
 
 function App() {
+
+  const [password, setPassword] = useState("");
+
+  const passwordStrength = getPasswordStrength(password);
+
+  const [firstSectionColor, secondSectionColor, thirdSectionColor] = useMemo(() => [
+      getSectionColor(1, passwordStrength), 
+      getSectionColor(2, passwordStrength), 
+      getSectionColor(3, passwordStrength)
+    ], 
+    [passwordStrength])
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
       </header>
+      <main>
+        <h1>Sign Up Form</h1>
+      <form onSubmit={(e)=>e.preventDefault()} className="password-strength">
+      <input
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        placeholder="Enter your password"
+        className="password-input"
+      />
+      <div className="strength-indicator">
+        <div
+          className={`section ${firstSectionColor}`}
+        >Easy</div>
+        <div
+          className={`section ${secondSectionColor}`}
+        >Medium</div>
+        <div
+          className={`section ${thirdSectionColor}`}
+        >Strong</div>
+      </div>
+    </form>
+      </main>
     </div>
   );
 }
