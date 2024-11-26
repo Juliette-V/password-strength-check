@@ -1,20 +1,12 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import './App.css';
-import { getPasswordStrength, getSectionColor } from './utils';
+import PasswordInput from './components/PasswordInput';
+import StrengthIndicator from './components/StrengthIndicator';
 
 
 function App() {
 
   const [password, setPassword] = useState("");
-
-  const passwordStrength = getPasswordStrength(password);
-
-  const [firstSectionColor, secondSectionColor, thirdSectionColor] = useMemo(() => [
-      getSectionColor(1, passwordStrength), 
-      getSectionColor(2, passwordStrength), 
-      getSectionColor(3, passwordStrength)
-    ], 
-    [passwordStrength])
 
   return (
     <div className="App">
@@ -22,26 +14,10 @@ function App() {
       </header>
       <main>
         <h1>Sign Up Form</h1>
-      <form onSubmit={(e)=>e.preventDefault()} className="password-strength">
-      <input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="Enter your password"
-        className="password-input"
-      />
-      <div className="strength-indicator">
-        <div
-          className={`section ${firstSectionColor}`}
-        >Easy</div>
-        <div
-          className={`section ${secondSectionColor}`}
-        >Medium</div>
-        <div
-          className={`section ${thirdSectionColor}`}
-        >Strong</div>
-      </div>
-    </form>
+        <form onSubmit={(e)=>e.preventDefault()} className="password-strength">
+          <PasswordInput value={password} onChange={setPassword} />
+          <StrengthIndicator password={password} />
+        </form>
       </main>
     </div>
   );
